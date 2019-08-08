@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>流浪动物暖心计划</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/rem.css">
+    <link rel="stylesheet" href="./css/luckDraw.css">
+</head>
+
+<body>
+    <div class="errotishi hide">
+        <p class="msg"></p>
+    </div>
+    <div class="luckul">
+        <img src="./img/bgimg.png" alt="" class="bg">
+        <div class="luckTop">
+            <p class="one">恭喜您成为第0名</p>
+            <p class="onesm">流浪动物守护者</p>
+            <p class="two">为了感谢您对流浪动物的关注与支持</p>
+            <p class="three">您有0次抽奖机会</p>
+        </div>
+        <!-- 抽奖模块 -->
+        <ul class="luckcenter clearfix">
+            <li class="luckcenterli" id="li1">
+                <p class="free">免费<br>体检券</p>
+            </li>
+            <li class="luckcenterli" id="li2">
+                <img src="./img/noPrize.png" alt="">
+            </li>
+            <li class="luckcenterli" id="li3">
+                <p class="free">用品<br>满减券</p>
+            </li>
+            <li class="luckcenterli" id="li8">
+                <img src="./img/noPrize.png" alt="">
+            </li>
+            <li class="luckcenterli">
+                <img src="./img/start.png" alt="" class="start" onclick="clickstart()" id="start">
+                <img src="./img/end.png" alt="" class="end hide" id="end">
+            </li>
+            <li class="luckcenterli" id="li4">
+                <img src="./img/noPrize.png" alt="">
+            </li>
+            <li class="luckcenterli" id="li7">
+                <p class="free">免费<br>驱虫券</p>
+            </li>
+            <li class="luckcenterli" id="li6">
+                <img src="./img/noPrize.png" alt="">
+            </li>
+            <li class="luckcenterli" id="li5">
+                <p class="free">免费<br>绝育券</p>
+            </li>
+
+        </ul>
+        <!-- 普通用户 -->
+        <div class="ordinaryUser hide">
+            <p class="chunfang"><a href="https://mp.weixin.qq.com/s/O9s8gQCI-DQ-tRzrGWMKwA">了解春防大作战></a></p>
+            <div class="transmit clearfix footModal">
+                <img src="./img/star.png" alt="" class="fl">
+                <p class=" fl footModal">分享传递你的爱</p>
+            </div>
+            <!-- 救助狗狗的 -->
+            <div class="helpPets">
+                <p class="title">帮助这些丢失的小动物回家</p>
+                <ul class="petsul clearfix">
+
+                </ul>
+                <div class="helpHome">
+                    <img src="./img/erweima.jpg" alt="">
+                    <p>识别二维码帮Ta回家</p>
+                </div>
+            </div>
+        </div>
+        <!-- 特殊用户 -->
+        <div class="specialUser clearfix hide">
+            <p class="title">救助人分享得捐粮福利</p>
+            <div class="process clearfix">
+                <img src="./img/shareBut.png" alt="" class="fl">
+                <p class="line fl">——</p>
+                <img src="./img/assistanceBut.png" alt="" class="fl">
+                <p class="line fl"> ——</p>
+                <img src="./img/getBut.png" alt="" class="fl">
+            </div>
+            <div class="transmit sptransmit clearfix twomore footModal">
+                <img src="./img/star.png" alt="" class="fl">
+                <p class="fl footModal"> 分享传递你的爱</p>
+            </div>
+            <p class="tishi">通过您分享的海报助力，将计算为您的助力粮</p>
+            <div class="fellow clearfix">
+                <div class="title clearfix">
+                    <p class="fl">已有</p>
+                    <p class="fl num" style="color: red">0</p>
+                    <p class="fl">位好友帮您助力</p>
+                </div>
+
+                <!-- 有数据 -->
+                <div class="manUser hide clearfix">
+
+
+                </div>
+                <!-- 没数据 -->
+                <div class="kongUser hide">
+                    <img src="./img/kong.png" alt="">
+                    <p>点击上方按钮，分享传递你的爱</p>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- 中奖提示 -->
+    <div class="jiangMsg hide">
+        <img src="./img/zhongjaing.png" alt="" class="zhongjaing">
+        <p class="right" onclick="right()"></p>
+        <p class="title">免费体验券</p>
+        <div class="jiangBut">
+            <p class="btnone footModal">分享传递你的爱</p>
+            <p class="btntwo haibao">生成助力海报</p>
+            <p class="btnthree erweima">查看我的优惠券</p>
+            <div class="discount hide">
+                <img src="./img/erweima.jpg" alt="" class="discountimg">
+                <p class="tishi">扫码进小程序查看</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- 底部分享 -->
+    <div class="useshare hide">
+        <div class="footer clearfix">
+            <div class="footerli fl weixin">
+                <img src="./img/weixin.png" alt="">
+                <p>微信好友</p>
+            </div>
+            <div class="footerli fl friend">
+                <img src="./img/friend.png" alt="">
+                <p>朋友圈</p>
+            </div>
+            <div class="footerli fl haibao">
+                <img src="./img/haibao.png" alt="">
+                <p>海报分享</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 弹屏 -->
+    <div class="course hide">
+        <img src="./img/course.png" alt="">
+
+    </div>
+
+    <!-- 海报 -->
+    <div class="haibaoImg hide">
+        <img src=' ' alt="">
+        <div class="clearfix">
+            <p class="updown ">长按下方海报保存图片</p>
+        </div>
+    </div>
+
+    <!-- loading -->
+    <div class="loading">
+        <div class="loadingli">
+            <img src="./img/loading.gif" alt="">
+            <p>正在加载</p>
+        </div>
+    </div>
+
+    <div class="tankuang hide">
+        <div>
+            <p class="tit">您还没有抽奖机会</p>
+            <p class="sure">OK</p>
+        </div>
+    </div>
+
+
+</body>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script>
+    baseUrl = 'https://www.memorychilli.com/';
+    act = 'd6210b86e9f14578b2d10cd00d5bdda1';
+    // 抽奖次数
+    var luckDrawnum;
+
+
+
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    var Request = new Object();
+    Request = GetRequest();
+    console.log(Request.speUserid)
+    if (Request.userId == undefined) {
+        window.location = "./index.html"
+    } else {
+        userId = Request.userId
+        mypopNum = Request.popNum
+        specialUser = Request.specialUser
+        speUserid = Request.speUserid
+        share()
+    }
+    console.log(Request.userId)
+
+    // 如果次数是 0， 不让点击按钮
+    if (luckDrawnum = 0) {
+        $('.start').attr('disabled', "true")
+    }
+
+
+
+
+    // 抽奖
+    var t; ///用它存放setinterval,不用扣得太细，因为只要用到setinterval最后就得用     window.clearInterval(t);去释放他
+    var index = 1; /////这个用来记录当前循环的次数，比如点了抽奖要转四圈，每转一圈有8个奖品，那一共就要循环8*圈数
+    var circles = 1; ////抽奖要转的圈数
+    var currentcircles = 1; ///记录当前是第几圈setinterval的第二个参数，通过操纵他来实现变速
+    var speed = 0; /////转动的速度,用它作为 
+    var endpoint = 3; /////最后停止的位置，即选中了谁  0=8 
+    // 抽奖开始
+
+    function clickstart() {
+        $.ajax({
+            url: baseUrl + 'lpCms/activity/drafts',
+            method: "post",
+            dataType: "json",
+            data: {
+                activityId: act,
+                userId: userId
+
+            },
+            success: function (res) {
+                if (res.data == null) {
+                    nums = [2, 4, 6, 0]
+                    endpoint = nums[Math.floor(Math.random() * nums.length)]
+                    $('.start').hide()
+                    $('.end').show()
+                }
+                if (res.data.couponType == 1) { //体检是2，用品是1
+                    endpoint = 3
+                }
+                if (res.data.couponType == 2) { //体检是2，用品是1
+                    endpoint = 1
+                }
+                if (res.code == 30001) {
+                    $('.tankuang').show()
+                    return;
+                }
+                startup()
+
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+    }
+    $('.sure').on('click', function () {
+        $('.tankuang').hide()
+    })
+
+    function startup() {
+        ///点一次抽奖过程中按钮禁用
+        $('.start').attr('disabled', "true")
+        $('#start').hide()
+        $('#end').show()
+        circles = 5;
+        ////当前的圈数
+        currentcircles = 1;
+        ////速度，谁的太高了会很慢
+        speed = 650;
+        ////当前循环的次数
+        index = 1;
+        /////取得放奖品的<td>的数组
+        var goods = $('.luckcenterli');
+        ////存放奖品的<td>的数组
+        var drawturn = [];
+        ////遍历加入到drawturn数组里
+        for (var i = 0; i < (8); i++) {
+            // document.getElementById("turn" + (i + 1)).style.border = "0";
+            ////加入时把他们的样式置为初始样式
+            // document.getElementById("li" + (i + 1)).style.fontSize = "large";
+            document.getElementById("li" + (i + 1)).style.border = "none";
+            ///push方法，向数组内追加一个元素
+            drawturn.push(document.getElementById("turn" + (i + 1)));
+        }
+        window.clearInterval(t);
+        ////开始循环
+        t = setInterval(HighTurn, speed);
+    }
+    ///循环奖品方法
+    function HighTurn() {
+        if (index > 1) {
+            //清除样式了，因为他的前一位是上一次循环的8号奖品
+            if ((index % 8) == 1) {
+                $('#li8').css('border', 'none')
+            }
+            //清除样式 
+            else {
+                document.getElementById("li" + ((index - (8 * (currentcircles - 1))) - 1)).style.border = "none";
+            }
+        }
+        ////处理完前一个商品的样式后再来改变当前奖品的样式——大号字体，红色
+        // $('#li'+((index - (8 * (currentcircles - 1))) - 1)).css('border','3px solid pink')
+        document.getElementById("li" + (index - (8 * (currentcircles - 1)))).style.border = "3px solid pink";
+
+        if ((index % 8) == 0) {
+            currentcircles++;
+        }
+        index++;
+        if (currentcircles == 1) {
+            window.clearInterval(t);
+            ///改变速度
+            speed -= 80;
+            ///在重新执行
+            t = setInterval(HighTurn, speed);
+        }
+        ///在下设定的在最后一圈的时候开始减速
+        else if (currentcircles == circles) {
+            window.clearInterval(t);
+            speed += 80;
+            t = setInterval(HighTurn, speed);
+        }
+
+        console.log(endpoint)
+        // alert(circles == currentcircles && ((index - 1) % 8) == endpoint)
+        ////用来判断是否循环完了，如果当前圈数==要循环的圈数，且当前循环到的奖品编号==终结点则判定为循环结束，最终会停在终结点位置的奖品上
+        if (circles == currentcircles && ((index - 1) % 8) == endpoint) {
+            ///清除setInterval
+            window.clearInterval(t);
+            ///回复按钮使用
+            if (endpoint == 1) {
+                $('.jiangMsg .title').text('免费体检券')
+                window.setTimeout(starMsg, 800)
+            } else if (endpoint == 3) {
+                $('.jiangMsg .title').text('用品减免劵')
+                window.setTimeout(starMsg, 800)
+            } else {
+                alert('未中奖')
+            }
+
+
+
+            return;
+        }
+
+
+    }
+
+    function starMsg() {
+        $('.jiangMsg').show()
+        $('#start').show()
+        $('#end').hide()
+        actcount()
+    }
+    actcount()
+
+    function actcount() {
+        $('.loading').show()
+        $.ajax({
+            url: baseUrl + 'lpCms/activity/drafts/count',
+            method: "get",
+            dataType: "json",
+            data: {
+                activityId: act,
+                userId: userId
+
+            },
+            success: function (res) {
+                $('.loading').hide()
+                luckDrawnum = res.data
+                $('.three').text('您有' + res.data + "次抽奖机会")
+                $('.one').text("恭喜您成为第" + mypopNum + "名")
+
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+    }
+
+    if (specialUser == 0) {
+        specialurl()
+    }
+    // 特殊
+    if (specialUser == 1) {
+        $('.specialUser').show()
+        follower()
+    }
+    // 普通
+    function specialurl() {
+        $('.loading').show()
+        $('.ordinaryUser').show()
+        $.ajax({
+            url: 'https://www.memorychilli.com/pokemon/record/charity',
+            method: "get",
+            dataType: "json",
+            data: {
+                city: '上海市',
+                pageNum: 1,
+                pageSize: 3
+
+            },
+            success: function (res) {
+                $('.loading').hide()
+                console.log(res.data)
+                for (var i = 0; i < res.data.length; i++) {
+                    // https://melody.memorychilli.com
+                    var parentdiv = $('<li></li>')
+                    parentdiv.attr('class', 'petsli')
+                    var childimg = $('<img>');
+                    var childp = $('<p></p>');
+
+                    childimg.attr("src", 'https://melody.memorychilli.com/' + res
+                        .data[i].images[0])
+                    var content = JSON.parse(res.data[i].content)
+                    childp.text('我是' + content.petName + ',我在' + res.data[i]
+                        .location + '走丢')
+                    parentdiv.append(childimg)
+                    parentdiv.append(childp)
+                    $('.petsul').append(parentdiv);
+                }
+
+
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+    }
+
+    function right() {
+        $('.jiangMsg').hide()
+    }
+
+    // 特殊
+    function follower() {
+        $('.loading').show()
+        $.ajax({
+            url: baseUrl + 'lpCms/activity/assistance/followers',
+            method: "get",
+            dataType: "json",
+            data: {
+                activityId: act,
+                assistUserId: userId
+
+            },
+            success: function (res) {
+                $('.loading').hide()
+                if (res.data.length == 0) {
+                    $('.kongUser').show()
+                } else {
+                    $('.fellow .title .num').text(res.data.length)
+                    $('.manUser').show()
+                    var manUser = $('.manUser')
+                    var that = this
+                    for (var i = 0; i < res.data.length; i++) {
+                        var parentdiv = $('<div></div>')
+                        parentdiv.attr('class', 'fellowli')
+                        var childdiv = $('<img>');
+                        childdiv.attr('class', 'img')
+                        childdiv.attr("src", res.data[i].photoPath)
+                        parentdiv.append(childdiv)
+                        manUser.append(parentdiv);
+                    }
+                }
+
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+    }
+
+
+
+
+    $('.haibao').on('click', function () {
+        $('.loading').show()
+        $.ajax({
+            url: baseUrl + 'lpCms//activity/oss/image/poster',
+            method: "get",
+            dataType: "json",
+            data: {
+                userId: speUserid
+
+            },
+            success: function (res) {
+                $('.loading').hide()
+                console.log(res.data.data)
+                $('.haibaoImg img').attr('src', res.data.data)
+                $('.haibaoImg').show()
+                $(".useshare").hide();
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+
+    })
+  )
+
+    $('.haibaoImg').on('click', function () {
+        $('.haibaoImg').hide()
+    })
+    $(".haibaoImg img").on("click", function (e) {
+        e.stopPropagation();
+    });
+
+
+
+    function draft() {
+        $.ajax({
+            url: baseUrl + 'lpCms/activity/drafts/draft',
+            method: "post",
+            dataType: "json",
+            data: {
+                userId: userId,
+                activityId: act,
+
+            },
+            success: function (res) {
+                console.log(res.code)
+                if (res.code == 30002) {
+                    $('.three').text('您有' + luckDrawnum + "次抽奖机会")
+                } else {
+                    $('.three').text('您有' + (parseInt(luckDrawnum + 1)) + "次抽奖机会")
+                }
+
+            },
+            error: function (res) {
+                console.log('失败')
+            }
+        })
+
+    }
+
+    $('.erweima').on('click', function () {
+        $('.discount').show()
+    })
+
+    $('.zhongjaing').on('click', function () {
+        console.log(1)
+        $('.discount').hide()
+    })
+
+
+
+
+
+    // 判断是浏览器还是小程序
+    var ua = window.navigator.userAgent.toLowerCase();
+    console.log(ua.match(/MicroMessenger/i) == 'micromessenger')
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') { //判断是否是微信环境
+        //微信环境
+        wx.miniProgram.getEnv(function (res) {
+            if (res.miniprogram) {
+                // 显示海报
+                $('.footModal').on('click', function () {
+                    $('.loading').show()
+                    $.ajax({
+                        url: baseUrl + 'lpCms//activity/oss/image/poster',
+                        method: "get",
+                        dataType: "json",
+                        data: {
+                            userId: speUserid
+                        },
+                        success: function (res) {
+                            $('.loading').hide()
+                            $('.haibaoImg img').attr('src', res.data.data)
+                            $('.haibaoImg').show()
+                            $(".useshare").hide();
+                        },
+                        error: function (res) {
+                            console.log('失败')
+                        }
+                    })
+
+                })
+            } else {
+
+                // 显示底部
+                $(".footModal").on("click", function (e) {
+                    $(".useshare").show();
+                    if (!$(".useshare").is(':hidden')) {
+                        $(".useshare").on("click", function (e) {
+                            $(".useshare").hide();
+                        })
+
+                    }
+                });
+
+                $(".footer").on("click", function (e) {
+                    e.stopPropagation();
+                });
+
+                $(".weixin").on("click", function (e) {
+                    $('.course').show()
+                    if (!$(".course").is(':hidden')) {
+                        $(".course").on("click", function (e) {
+                            $(".course").hide();
+                            $(".useshare").hide();
+                        })
+
+                    }
+                });
+
+                $(".friend").on("click", function (e) {
+                    $('.course').show()
+                    if (!$(".course").is(':hidden')) {
+                        $(".course").on("click", function (e) {
+                            $(".course").hide();
+                            $(".useshare").hide();
+                        })
+
+                    }
+                });
+            }
+        })
+    } else {
+        //非微信环境逻辑
+    }
+
+    // 分享
+
+    function share() {
+        $.ajax({
+            url: baseUrl + 'lpWechat/wxAuth/configWxEnvironment',
+            method: "get",
+            dataType: "json",
+            data: {
+                url: window.location.href,
+                plateForm: 'MP_WX',
+            },
+            success: function (res) {
+                var data = res.data
+                wx.config({
+                    debug: false,
+                    appId: data.appId, // 和获取Ticke的必须一样------必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: data.signature, // 必填，签名，见附录1
+                    //需要分享的列表项:发送给朋友，分享到朋友圈，分享到QQ，分享到QQ空间
+                    jsApiList: [
+                        "onMenuShareAppMessage",
+                        "onMenuShareTimeline",
+                        "onMenuShareQQ",
+                        "onMenuShareQZone"
+                    ]
+                });
+                //处理验证失败的信息
+                wx.error(function (res) {});
+                //处理验证成功的信息
+                wx.ready(function () {
+                    console.log(speUserid)
+                    //分享到朋友圈
+                    wx.onMenuShareTimeline({
+                        title: "春防大作战之流浪动物暖心计划", // 分享标题
+                        link: 'https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=' +
+                            speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'https://melody.memorychilli.com/activity/postImage/share_bg.jpg', // 分享图标
+                        success: function (res) {
+                            // 用户确认分享后执行的回调函数
+                            _this.showMsg("分享成功!");
+                            draft()
+
+                        },
+                        cancel: function (res) {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                    //分享给朋友
+                    wx.onMenuShareAppMessage({
+                        title: "春防大作战之流浪动物暖心计划", // 分享标题
+                        desc: "关爱流浪动物，助力宠物公益|你，将温暖它们！", // 分享描述
+                        link: 'https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=' +
+                            speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'https://melody.memorychilli.com/activity/postImage/share_bg.jpg', // 分享图标
+                        type: "", // 分享类型,music、video或link，不填默认为link
+                        dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
+                        success: function (res) {
+                            // 用户确认分享后执行的回调函数
+                            draft()
+
+                        },
+                        cancel: function (res) {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                });
+            }
+        })
+    }
+    window.onpageshow = function (event) {
+        //event.persisted 判断浏览器是否有缓存, 有为true, 没有为false
+        if (event.persisted) {
+            window.location.reload();
+        }
+    }
+</script>
+
+</html>
