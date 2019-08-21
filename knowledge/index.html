@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>好命天生萌宠百科</title>
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/rem.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+
+  <body>
+    <div class="btn_cover">
+      <div class="btn_bord bold cursor" onclick="toCat();">
+        猫猫百科
+      </div>
+      <div class="btn_bord bold cursor" onclick="toDog();">
+        狗狗百科
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+      
+      function toCat(){
+        location.href = "detail.html?type=2"
+      }
+
+      function toDog(){
+        location.href = "detail.html?type=1"
+      }
+
+
+    window.onpageshow = function(event) {
+      //event.persisted 判断浏览器是否有缓存, 有为true, 没有为false
+      if (event.persisted) {
+        window.location.reload();
+      }
+    };
+  </script>
+</html>
