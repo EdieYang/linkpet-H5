@@ -106,10 +106,43 @@ body {
   background-color: #ffcd54;
   border-radius: 0.3rem;
   box-shadow: 0.1rem 0.3rem #413929;
-  margin-bottom:1rem;
+  margin-bottom: 1rem;
   animation: fade-in; /*动画名称*/
   animation-duration: 1s; /*动画持续时间*/
   -webkit-animation: fade-in 1s; /*针对webkit内核*/
+}
+
+.list_search_item {
+  width: 46%;
+  padding: 0.5rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: #ffcd54;
+  border-radius: 0.3rem;
+  box-shadow: 0.1rem 0.3rem #413929;
+  margin-bottom: 1.6rem;
+  animation: fade-in; /*动画名称*/
+  animation-duration: 1s; /*动画持续时间*/
+  -webkit-animation: fade-in 1s; /*针对webkit内核*/
+}
+
+.item_img {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: -1.2rem;
+}
+
+.item_search_title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  margin-top: 0.4rem;
 }
 
 .item_title {
@@ -157,6 +190,18 @@ body {
 .data_num {
   font-size: 0.3rem;
   color: #000;
+}
+
+.no_data {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto;
+}
+
+.no_data_tip {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0.5rem auto;
 }
 
 @keyframes fade-in {

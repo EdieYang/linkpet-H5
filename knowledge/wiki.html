@@ -11,7 +11,7 @@
   <style>
     body {
       background-color: #fff5dd;
-      padding-bottom:2rem;
+      padding-bottom: 2rem;
     }
 
     pre {
@@ -26,9 +26,9 @@
       word-break: break-all;
       font-size: 0.6rem !important;
       color: #2d2d2d;
-      font-family: monospace, monospace !important;
-      font-weight: 500!important;
-      margin-top:0.3rem;
+      font-family: Microsoft YaHei !important;
+      font-weight: 500 !important;
+      margin-top: 0.3rem;
     }
 
     ol {
@@ -42,10 +42,10 @@
       font-size: 0.6rem !important;
       font-weight: 500 !important;
     }
-    
-    ul{
-      width:90%;
-      margin-left:5%;
+
+    ul {
+      width: 90%;
+      margin-left: 5%;
     }
 
     li {
@@ -60,28 +60,112 @@
       font-weight: 500 !important;
     }
 
-    img{
-      width:80%;
-      height:auto;
-      margin:1rem auto;
+    img {
+      width: 80%;
+      height: auto;
+      margin: 1rem auto;
       border-radius: 0.3rem;
     }
+
+    .item_data {
+      width: 80%;
+      margin-left: 10%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      height: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .data_cover {
+      width: 6rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .data_img {
+      width: 0.8rem;
+      height: 0.8rem;
+      margin: 0 0 !important;
+      border-radius: 0 !important;
+      margin-right: 0.4rem !important;
+    }
+
+    .data_num {
+      font-size: 0.4rem;
+      color: #000;
+    }
+
+    .like_img {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto !important;
+      border-radius: 0 !important;
+      margin-top: 2rem !important;
+    }
+
+    .like_footer {
+      font-size: 0.7rem;
+      color: #2d2d2d;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .errotishi {
+
+      width: 100%;
+      background-color: #f9263b;
+      text-align: center;
+
+      position: fixed;
+      top: 0;
+      left: 0;
+      color: #fff !important;
+      z-index: 999;
+    }
+
+    .msg {
+      color: #fff !important;
+      height: 2rem !important;
+      line-height: 2rem !important;
+    }
+
   </style>
 </head>
 
 <body>
-  <div id="title" style="font-size: 1rem;width:100%;text-align:center;font-weight:700;margin-top:2rem;margin-bottom:2rem;"></div>
+  <div class="errotishi hide">
+    <p class="msg"></p>
+  </div>
+  <div id="title"
+    style="font-size: 1rem;width:100%;text-align:center;font-weight:700;margin-top:1rem;margin-bottom:1rem;"></div>
+  <div class="item_data">
+    <div class="data_cover">
+      <img src="img/read.png" class="data_img" />
+      阅读量：<div class="data_num" id="readNum"></div>
+    </div>
+    <div class="data_cover">
+      <img src="img/like.png" class="data_img" />
+      点赞数：<div class="data_num" id="likeNum"></div>
+    </div>
+  </div>
+  </div>
   <pre class="wiki"></pre>
+  <img src="img/zan.png" class="like_img" onclick="likeNumAddition()" />
+  <div class="like_footer">觉得好就点个赞吧！</div>
 </body>
 <script src="./js/jquery.min.js"></script>
 <script>
-  var baseUrl='http://localhost:8093/';
-
-  $(function () {
-    var Request = new Object();
+  var baseUrl = 'http://localhost:8093/';
+  var Request = new Object();
+  $(function() {
     Request = GetRequest();
     console.log(Request.catalogId);
     getWikiDetail(Request.catalogId);
+    readNumAddition(Request.catalogId)
   });
 
   // 获取链接参数
@@ -106,13 +190,56 @@
       data: {
         catalogId: id
       },
-      success: function (res) {
-        var content=res.data.content.replace(RegExp("background-color:#ffffff", "g"),"background-color:#f7d6d6")
+      success: function(res) {
+        var content = res.data.content.replace(RegExp("background-color:#ffffff", "g"), "background-color:#ffb606")
         $(".wiki").html(content);
-        $("#title").html(res.data.title)
+        $("#title").html(res.data.title);
+        $("#readNum").html(res.data.readNum);
+        $("#likeNum").html(res.data.likeNum);
       }
     });
   }
+
+
+  function readNumAddition(id) {
+    $.ajax({
+      url: baseUrl + "lpCms/wiki/articleReadNum",
+      method: "get",
+      dataType: "json",
+      data: {
+        id: id
+      },
+      success: function(res) {
+        var readNum = $("#readNum").html();
+        readNum++;
+        $("#readNum").html(readNum);
+      }
+    });
+  }
+
+
+  function likeNumAddition() {
+    $.ajax({
+      url: baseUrl + "lpCms/wiki/articleLikeNum",
+      method: "get",
+      dataType: "json",
+      data: {
+        id: Request.catalogId
+      },
+      success: function(res) {
+        var likeNum = $("#likeNum").html();
+        likeNum++;
+        $("#likeNum").html(likeNum);
+        $(".msg").html("谢谢您的支持");
+        $(".errotishi").show();
+        setTimeout(function() {
+          $(".errotishi").hide();
+        }, 2000)
+      }
+    });
+  }
+
+
 
   function code() {
     $.ajax({
@@ -123,7 +250,7 @@
         url: window.location.href,
         plateForm: "MP_WX"
       },
-      success: function (res) {
+      success: function(res) {
         location.href = res.data.data;
       }
     });
@@ -138,7 +265,7 @@
         code: code,
         plateForm: "MP_WX"
       },
-      success: function (res) {
+      success: function(res) {
         history.replaceState(null, null, "index.html");
         userId = res.data.data;
         getuserXinxi();
@@ -158,7 +285,7 @@
         activityId: act,
         userId: userId
       },
-      success: function (res) {
+      success: function(res) {
         $(".loading").hide();
         if (res.data == null) {
           specialUser = 0; //0是普通
@@ -190,7 +317,7 @@
         activityId: act,
         userId: userId
       },
-      success: function (res) {
+      success: function(res) {
         $(".loading").hide();
         console.log(res);
         if (res.data.activityAssistance == null) {
@@ -203,7 +330,7 @@
           mypopNum = res.data.activityAssistance.assistOrder;
         }
       },
-      error: function (res) {
+      error: function(res) {
         console.log("失败");
       }
     });
@@ -224,7 +351,7 @@
         assistType: assistType,
         assistUserId: assistUserId
       },
-      success: function (res) {
+      success: function(res) {
         console.log(res);
         $(".msg").text("助力成功");
         $(".errotishi").show();
@@ -233,7 +360,7 @@
         window.setTimeout(refreshCount, 1000);
         window.setTimeout(routerUrl, 1000);
       },
-      error: function (res) {
+      error: function(res) {
         $(".errotishi").show();
         $(".msg").text("助力失败，请检查网络后重新助力");
         window.setTimeout(refreshCount, 2000);
@@ -251,7 +378,7 @@
       data: {
         activityId: act
       },
-      success: function (res) {
+      success: function(res) {
         $(".loading").hide();
         console.log(res.data.assistNo);
         popNum = res.data.assistNo;
@@ -267,7 +394,7 @@
           $(".secondPass").css("border-color", "#ff3046");
         }
       },
-      error: function (res) {
+      error: function(res) {
         console.log("失败");
       }
     });
@@ -300,7 +427,7 @@
         url: window.location.href,
         plateForm: "MP_WX"
       },
-      success: function (res) {
+      success: function(res) {
         var data = res.data;
         wx.config({
           debug: false,
@@ -317,9 +444,9 @@
           ]
         });
         //处理验证失败的信息
-        wx.error(function (res) { });
+        wx.error(function(res) { });
         //处理验证成功的信息
-        wx.ready(function () {
+        wx.ready(function() {
           console.log(userId);
           //分享到朋友圈
           // https://www.memorychilli.com/linkpets/activityplan/index.html
@@ -330,11 +457,11 @@
               speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl:
               "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
-            success: function (res) {
+            success: function(res) {
               // 用户确认分享后执行的回调函数
               _this.showMsg("分享成功!");
             },
-            cancel: function (res) {
+            cancel: function(res) {
               // 用户取消分享后执行的回调函数
             }
           });
@@ -349,10 +476,10 @@
               "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
             type: "", // 分享类型,music、video或link，不填默认为link
             dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
-            success: function (res) {
+            success: function(res) {
               // 用户确认分享后执行的回调函数
             },
-            cancel: function (res) {
+            cancel: function(res) {
               // 用户取消分享后执行的回调函数
             }
           });
@@ -360,7 +487,7 @@
       }
     });
   }
-  window.onpageshow = function (event) {
+  window.onpageshow = function(event) {
     //event.persisted 判断浏览器是否有缓存, 有为true, 没有为false
     if (event.persisted) {
       window.location.reload();
