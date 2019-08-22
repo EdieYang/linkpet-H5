@@ -1,405 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>萌宠百科</title>
-    <link rel="stylesheet" href="./css/base.css" />
-    <link rel="stylesheet" href="./css/rem.css" />
-    <link rel="stylesheet" href="./css/detail.css" />
-    <style>
-      [v-cloak] {
-        display: none;
-      }
-    </style>
-    <script src="./js/vue.min.js"></script>
-  </head>
 
-  <body>
-    <div class="search_cover">
-      <input
-        type="text"
-        class="serach_input"
-        value=""
-        placeholder="#口腔清洁"
-      />
-      <img class="search_icon" src="img/search.png" />
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>萌宠百科</title>
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/rem.css" />
+  <link rel="stylesheet" href="./css/detail.css" />
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+  <script src="./js/vue.min.js"></script>
+</head>
 
-    <div class="catalog_cover" id="v-for-object" v-cloak>
-      <div v-for="(item,index) in wikiList" style="width:100% ">
-        <div class="catalog_item">
-          <div class="item-cover">
-            <img src="img/catalog1.png" class="cata_img" />
-            <div class="cata_title">{{ item.name }}</div>
-            <div class="cata_num">共{{ item.cataNum }}篇笔记</div>
-          </div>
-          <img
-            src="img/arrow.png"
-            class="cata_arr_img"
-            v-on:click="hideArrow(index)"
-            v-if="item.arrow"
-          />
-          <img
-            src="img/arrow_up.png"
-            class="cata_arr_img"
-            v-on:click="showArrow(index)"
-            v-if="!item.arrow"
-          />
+<body>
+  <div class="search_cover">
+    <input type="text" class="serach_input" value="" placeholder="#口腔清洁" id="txt"/>
+    <img class="search_icon" src="img/search.png" />
+  </div>
+
+  <div class="catalog_cover" id="v-for-object" v-cloak v-if="wikiShow">
+    <div v-for="(item,index) in wikiList" style="width:100% ">
+      <div class="catalog_item">
+        <div class="item-cover">
+          <img v-bind:src="item.catalogLists[0].image" class="cata_img" />
+          <div class="cata_title">{{ item.catalogName }}</div>
+          <div class="cata_num">共{{ item.catalogLists.length }}篇笔记</div>
         </div>
+        <img src="img/arrow.png" class="cata_arr_img" v-on:click="hideArrow(index)" v-if="item.arrow" />
+        <img src="img/arrow_up.png" class="cata_arr_img" v-on:click="showArrow(index)" v-if="!item.arrow" />
+      </div>
 
-        <div class="caltalog_list_cover" v-if="!item.arrow ">
-          <div
-            class="list_item"
-            onclick="toWiki()"
-            v-for="citem in item.cataList"
-          >
-            <div class="item_title">{{ citem.cataTitle }}</div>
-            <div class="item_divide"></div>
-            <div class="item_data">
-              <div class="data_cover">
-                <img src="img/read.png" class="data_img" />
-                <div class="data_num">{{ citem.cataReadNum }}</div>
-              </div>
-              <div class="data_cover">
-                <img src="img/like.png" class="data_img" />
-                <div class="data_num">{{ citem.cataLikeNum }}</div>
-              </div>
+      <div class="caltalog_list_cover" v-if="!item.arrow ">
+        <div class="list_item" v-on:click="toWiki(citem.id)" v-for="citem in item.catalogLists">
+          <div class="item_title">{{ citem.smallName }}</div>
+          <div class="item_divide"></div>
+          <div class="item_data">
+            <div class="data_cover">
+              <img src="img/read.png" class="data_img" />
+              <div class="data_num">{{ citem.readNum }}</div>
+            </div>
+            <div class="data_cover">
+              <img src="img/like.png" class="data_img" />
+              <div class="data_num">{{ citem.likeNum }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
-  <script src="./js/jquery.min.js"></script>
-  <script>
-    var vm = new Vue({
-      el: "#v-for-object",
-      data: {
-        wikiList: [
-          {
-            name: "训练",
-            cataNum: "32",
-            arrow: true,
-            cataList: [
-              {
-                cataTitle: "咬主人手",
-                cataReadNum: "32",
-                cataLikeNum: "12"
-              },
-              {
-                cataTitle: "咬主人手",
-                cataReadNum: "32",
-                cataLikeNum: "12"
-              }
-            ]
-          }
-        ]
+  </div>
+</body>
+<script src="./js/jquery.min.js"></script>
+<script>
+  var baseUrl = 'http://localhost:8093/';
+  var vm = new Vue({
+    el: "#v-for-object",
+    data: {
+      wikiList: [],
+      wikiShow:true
+    },
+    methods: {
+      hideArrow: function (index) {
+        this.wikiList[index].arrow = false;
       },
-      methods: {
-        hideArrow: function(index) {
-          this.wikiList[index].arrow = false;
-        },
-        showArrow: function(index) {
-          this.wikiList[index].arrow = true;
+      showArrow: function (index) {
+        this.wikiList[index].arrow = true;
+      }
+    }
+  });
+
+  $(function () {
+    var Request = new Object();
+    Request = GetRequest();
+    console.log(Request.type);
+    getCatCatalog(Request.type);
+  });
+
+  // 获取链接参数
+  function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      strs = str.split("&");
+      for (var i = 0; i < strs.length; i++) {
+        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+    }
+    return theRequest;
+  }
+
+
+  var flag = true;
+  $('#txt').on('compositionstart', function () {
+    flag = false;
+  })
+  $('#txt').on('compositionend', function () {
+    flag = true;
+  })
+  $('#txt').on('input', function () {
+    var _this = this;
+    setTimeout(function () {
+      if (flag) {
+        console.log($(_this).val());
+        searchArticle($(_this).val())
+      }
+    }, 0)
+  })
+
+  function toWiki(id) {
+    location.href = "wiki.html?catalogId=" + id;
+  }
+
+  function searchArticle(search) {
+    $.ajax({
+      url: baseUrl + "lpCms/wiki/search",
+      method: "get",
+      dataType: "json",
+      data: {
+        search: search
+      },
+      success: function (res) {
+        var result = res.data;
+        vm.wikiArticleList = result
+        vm.wikiShow=false
+      }
+    });
+  }
+
+  function getCatCatalog(type) {
+    $.ajax({
+      url: baseUrl + "lpCms/wiki/catalogs",
+      method: "get",
+      dataType: "json",
+      data: {
+        type: type
+      },
+      success: function (res) {
+        var result = res.data;
+        for (var i = 0; i < result.length; i++) {
+          result[i].arrow = true
+        }
+        vm.wikiList = result
+      }
+    });
+  }
+
+  function code() {
+    $.ajax({
+      url: baseUrl + "lpWechat/wxAuth/redirectCodeUrl",
+      method: "get",
+      dataType: "json",
+      data: {
+        url: window.location.href,
+        plateForm: "MP_WX"
+      },
+      success: function (res) {
+        location.href = res.data.data;
+      }
+    });
+  }
+
+  function xinxi() {
+    $.ajax({
+      url: baseUrl + "lpWechat/wxAuth/authUserInfo",
+      method: "get",
+      dataType: "json",
+      data: {
+        code: code,
+        plateForm: "MP_WX"
+      },
+      success: function (res) {
+        history.replaceState(null, null, "index.html");
+        userId = res.data.data;
+        getuserXinxi();
+        share();
+      }
+    });
+  }
+
+  // 用于判断该用户是否是特殊用户
+  function register(num) {
+    $(".loading").show();
+    $.ajax({
+      url: baseUrl + "lpCms/activity/register/info",
+      method: "get",
+      dataType: "json",
+      data: {
+        activityId: act,
+        userId: userId
+      },
+      success: function (res) {
+        $(".loading").hide();
+        if (res.data == null) {
+          specialUser = 0; //0是普通
+          speUserid = assistUserId;
+          console.log(num);
+          if (num == 0) {
+            $(".onemore").hide();
+            $(".threemore").show();
+          }
+        } else {
+          specialUser = 1; //1是特殊
+          speUserid = userId;
+          if (num == 0) {
+            $(".onemore").hide();
+            $(".fourmore").show();
+          }
         }
       }
     });
-
-    $(function() {
-      var Request = new Object();
-      Request = GetRequest();
-      console.log(Request.type);
-      // getCatCatalog(Request.type);
+  }
+  // 用于判断该用户是否是第一次进入
+  function getuserXinxi() {
+    $(".loading").show();
+    $.ajax({
+      url: baseUrl + "lpCms/activity/assistance/",
+      method: "get",
+      dataType: "json",
+      data: {
+        activityId: act,
+        userId: userId
+      },
+      success: function (res) {
+        $(".loading").hide();
+        console.log(res);
+        if (res.data.activityAssistance == null) {
+          //第一次进来
+          console.log(1);
+          $(".onemore").show();
+          register();
+        } else {
+          register(0);
+          mypopNum = res.data.activityAssistance.assistOrder;
+        }
+      },
+      error: function (res) {
+        console.log("失败");
+      }
     });
+  }
 
-    // 获取链接参数
-    function GetRequest() {
-      var url = location.search; //获取url中"?"符后的字串
-      var theRequest = new Object();
-      if (url.indexOf("?") != -1) {
-        var str = url.substr(1);
-        strs = str.split("&");
-        for (var i = 0; i < strs.length; i++) {
-          theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-        }
+  // 点击我要助力
+  function assistance() {
+    $(".onemorenow").show();
+    $(".onemore").hide();
+
+    $.ajax({
+      url: baseUrl + "lpCms/activity/assistance",
+      method: "post",
+      dataType: "json",
+      data: {
+        activityId: act,
+        userId: userId,
+        assistType: assistType,
+        assistUserId: assistUserId
+      },
+      success: function (res) {
+        console.log(res);
+        $(".msg").text("助力成功");
+        $(".errotishi").show();
+        // 修改URL地址
+        history.replaceState(null, null, "index.html?myUserId=" + userId);
+        window.setTimeout(refreshCount, 1000);
+        window.setTimeout(routerUrl, 1000);
+      },
+      error: function (res) {
+        $(".errotishi").show();
+        $(".msg").text("助力失败，请检查网络后重新助力");
+        window.setTimeout(refreshCount, 2000);
       }
-      return theRequest;
-    }
+    });
+  }
 
-    function toWiki() {
-      location.href = "wiki.html?type=1";
-    }
-
-    function getCatCatalog(type) {
-      $.ajax({
-        url: baseUrl + "lpCmsTest/wiki/list",
-        method: "get",
-        dataType: "json",
-        data: {
-          type: type
-        },
-        success: function(res) {
-          location.href = res.data.data;
+  // 页面进度条
+  function activing() {
+    $(".loading").show();
+    $.ajax({
+      url: baseUrl + "lpCms/activities/activity/" + act,
+      method: "get",
+      dataType: "json",
+      data: {
+        activityId: act
+      },
+      success: function (res) {
+        $(".loading").hide();
+        console.log(res.data.assistNo);
+        popNum = res.data.assistNo;
+        $(".popNum").text("助力人数：" + popNum + "人");
+        mypopNum = res.data.assistNo + 1;
+        console.log(mypopNum);
+        assistNo = (popNum * 30) / 10000; //60w
+        $(".colorful").width(assistNo + "%");
+        if (assistNo >= 30) {
+          $(".firstPass").css("border-color", "#ff3046");
         }
-      });
-    }
-
-    function code() {
-      $.ajax({
-        url: baseUrl + "lpWechat/wxAuth/redirectCodeUrl",
-        method: "get",
-        dataType: "json",
-        data: {
-          url: window.location.href,
-          plateForm: "MP_WX"
-        },
-        success: function(res) {
-          location.href = res.data.data;
+        if (assistNo >= 60) {
+          $(".secondPass").css("border-color", "#ff3046");
         }
-      });
-    }
-
-    function xinxi() {
-      $.ajax({
-        url: baseUrl + "lpWechat/wxAuth/authUserInfo",
-        method: "get",
-        dataType: "json",
-        data: {
-          code: code,
-          plateForm: "MP_WX"
-        },
-        success: function(res) {
-          history.replaceState(null, null, "index.html");
-          userId = res.data.data;
-          getuserXinxi();
-          share();
-        }
-      });
-    }
-
-    // 用于判断该用户是否是特殊用户
-    function register(num) {
-      $(".loading").show();
-      $.ajax({
-        url: baseUrl + "lpCms/activity/register/info",
-        method: "get",
-        dataType: "json",
-        data: {
-          activityId: act,
-          userId: userId
-        },
-        success: function(res) {
-          $(".loading").hide();
-          if (res.data == null) {
-            specialUser = 0; //0是普通
-            speUserid = assistUserId;
-            console.log(num);
-            if (num == 0) {
-              $(".onemore").hide();
-              $(".threemore").show();
-            }
-          } else {
-            specialUser = 1; //1是特殊
-            speUserid = userId;
-            if (num == 0) {
-              $(".onemore").hide();
-              $(".fourmore").show();
-            }
-          }
-        }
-      });
-    }
-    // 用于判断该用户是否是第一次进入
-    function getuserXinxi() {
-      $(".loading").show();
-      $.ajax({
-        url: baseUrl + "lpCms/activity/assistance/",
-        method: "get",
-        dataType: "json",
-        data: {
-          activityId: act,
-          userId: userId
-        },
-        success: function(res) {
-          $(".loading").hide();
-          console.log(res);
-          if (res.data.activityAssistance == null) {
-            //第一次进来
-            console.log(1);
-            $(".onemore").show();
-            register();
-          } else {
-            register(0);
-            mypopNum = res.data.activityAssistance.assistOrder;
-          }
-        },
-        error: function(res) {
-          console.log("失败");
-        }
-      });
-    }
-
-    // 点击我要助力
-    function assistance() {
-      $(".onemorenow").show();
-      $(".onemore").hide();
-
-      $.ajax({
-        url: baseUrl + "lpCms/activity/assistance",
-        method: "post",
-        dataType: "json",
-        data: {
-          activityId: act,
-          userId: userId,
-          assistType: assistType,
-          assistUserId: assistUserId
-        },
-        success: function(res) {
-          console.log(res);
-          $(".msg").text("助力成功");
-          $(".errotishi").show();
-          // 修改URL地址
-          history.replaceState(null, null, "index.html?myUserId=" + userId);
-          window.setTimeout(refreshCount, 1000);
-          window.setTimeout(routerUrl, 1000);
-        },
-        error: function(res) {
-          $(".errotishi").show();
-          $(".msg").text("助力失败，请检查网络后重新助力");
-          window.setTimeout(refreshCount, 2000);
-        }
-      });
-    }
-
-    // 页面进度条
-    function activing() {
-      $(".loading").show();
-      $.ajax({
-        url: baseUrl + "lpCms/activities/activity/" + act,
-        method: "get",
-        dataType: "json",
-        data: {
-          activityId: act
-        },
-        success: function(res) {
-          $(".loading").hide();
-          console.log(res.data.assistNo);
-          popNum = res.data.assistNo;
-          $(".popNum").text("助力人数：" + popNum + "人");
-          mypopNum = res.data.assistNo + 1;
-          console.log(mypopNum);
-          assistNo = (popNum * 30) / 10000; //60w
-          $(".colorful").width(assistNo + "%");
-          if (assistNo >= 30) {
-            $(".firstPass").css("border-color", "#ff3046");
-          }
-          if (assistNo >= 60) {
-            $(".secondPass").css("border-color", "#ff3046");
-          }
-        },
-        error: function(res) {
-          console.log("失败");
-        }
-      });
-    }
-
-    function refreshCount() {
-      $(".errotishi").hide();
-    }
-    // 跳转抽奖页
-    function routerUrl() {
-      history.replaceState(null, null, "index.html?myUserId=" + userId);
-      console.log(popNum);
-      location.href =
-        "./luckDraw.html?userId=" +
-        userId +
-        "&popNum=" +
-        mypopNum +
-        "&specialUser=" +
-        specialUser +
-        "&speUserid=" +
-        speUserid;
-    }
-
-    function share() {
-      $.ajax({
-        url: baseUrl + "lpWechat/wxAuth/configWxEnvironment",
-        method: "get",
-        dataType: "json",
-        data: {
-          url: window.location.href,
-          plateForm: "MP_WX"
-        },
-        success: function(res) {
-          var data = res.data;
-          wx.config({
-            debug: false,
-            appId: data.appId, // 和获取Ticke的必须一样------必填，公众号的唯一标识
-            timestamp: data.timestamp, // 必填，生成签名的时间戳
-            nonceStr: data.nonceStr, // 必填，生成签名的随机串
-            signature: data.signature, // 必填，签名，见附录1
-            //需要分享的列表项:发送给朋友，分享到朋友圈，分享到QQ，分享到QQ空间
-            jsApiList: [
-              "onMenuShareAppMessage",
-              "onMenuShareTimeline",
-              "onMenuShareQQ",
-              "onMenuShareQZone"
-            ]
-          });
-          //处理验证失败的信息
-          wx.error(function(res) {});
-          //处理验证成功的信息
-          wx.ready(function() {
-            console.log(userId);
-            //分享到朋友圈
-            // https://www.memorychilli.com/linkpets/activityplan/index.html
-            wx.onMenuShareTimeline({
-              title: "春防大作战之流浪动物暖心计划", // 分享标题
-              link:
-                "https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=" +
-                speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl:
-                "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
-              success: function(res) {
-                // 用户确认分享后执行的回调函数
-                _this.showMsg("分享成功!");
-              },
-              cancel: function(res) {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-            //分享给朋友
-            wx.onMenuShareAppMessage({
-              title: "春防大作战之流浪动物暖心计划", // 分享标题
-              desc: "关爱流浪动物，助力宠物公益|你，将温暖它们！", // 分享描述
-              link:
-                "https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=" +
-                speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl:
-                "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
-              type: "", // 分享类型,music、video或link，不填默认为link
-              dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
-              success: function(res) {
-                // 用户确认分享后执行的回调函数
-              },
-              cancel: function(res) {
-                // 用户取消分享后执行的回调函数
-              }
-            });
-          });
-        }
-      });
-    }
-    window.onpageshow = function(event) {
-      //event.persisted 判断浏览器是否有缓存, 有为true, 没有为false
-      if (event.persisted) {
-        window.location.reload();
+      },
+      error: function (res) {
+        console.log("失败");
       }
-    };
-  </script>
+    });
+  }
+
+  function refreshCount() {
+    $(".errotishi").hide();
+  }
+  // 跳转抽奖页
+  function routerUrl() {
+    history.replaceState(null, null, "index.html?myUserId=" + userId);
+    console.log(popNum);
+    location.href =
+      "./luckDraw.html?userId=" +
+      userId +
+      "&popNum=" +
+      mypopNum +
+      "&specialUser=" +
+      specialUser +
+      "&speUserid=" +
+      speUserid;
+  }
+
+  function share() {
+    $.ajax({
+      url: baseUrl + "lpWechat/wxAuth/configWxEnvironment",
+      method: "get",
+      dataType: "json",
+      data: {
+        url: window.location.href,
+        plateForm: "MP_WX"
+      },
+      success: function (res) {
+        var data = res.data;
+        wx.config({
+          debug: false,
+          appId: data.appId, // 和获取Ticke的必须一样------必填，公众号的唯一标识
+          timestamp: data.timestamp, // 必填，生成签名的时间戳
+          nonceStr: data.nonceStr, // 必填，生成签名的随机串
+          signature: data.signature, // 必填，签名，见附录1
+          //需要分享的列表项:发送给朋友，分享到朋友圈，分享到QQ，分享到QQ空间
+          jsApiList: [
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+            "onMenuShareQQ",
+            "onMenuShareQZone"
+          ]
+        });
+        //处理验证失败的信息
+        wx.error(function (res) { });
+        //处理验证成功的信息
+        wx.ready(function () {
+          console.log(userId);
+          //分享到朋友圈
+          // https://www.memorychilli.com/linkpets/activityplan/index.html
+          wx.onMenuShareTimeline({
+            title: "春防大作战之流浪动物暖心计划", // 分享标题
+            link:
+              "https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=" +
+              speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl:
+              "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
+            success: function (res) {
+              // 用户确认分享后执行的回调函数
+              _this.showMsg("分享成功!");
+            },
+            cancel: function (res) {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+          //分享给朋友
+          wx.onMenuShareAppMessage({
+            title: "春防大作战之流浪动物暖心计划", // 分享标题
+            desc: "关爱流浪动物，助力宠物公益|你，将温暖它们！", // 分享描述
+            link:
+              "https://www.memorychilli.com/linkpets/activityplan/index.html?speUserid=" +
+              speUserid, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl:
+              "https://melody.memorychilli.com/activity/postImage/share_bg.jpg", // 分享图标
+            type: "", // 分享类型,music、video或link，不填默认为link
+            dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
+            success: function (res) {
+              // 用户确认分享后执行的回调函数
+            },
+            cancel: function (res) {
+              // 用户取消分享后执行的回调函数
+            }
+          });
+        });
+      }
+    });
+  }
+  window.onpageshow = function (event) {
+    //event.persisted 判断浏览器是否有缓存, 有为true, 没有为false
+    if (event.persisted) {
+      window.location.reload();
+    }
+  };
+</script>
+
 </html>
