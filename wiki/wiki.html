@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>萌宠百科</title>
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/rem.css" />
+  <style>
+    body {
+      background-color: #fff5dd;
+      padding-bottom: 2rem;
+    }
+
+    pre {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+    }
+
+    p {
+      width: 90%;
+      margin-left: 5%;
+      word-wrap: break-word;
+      word-break: break-all;
+      font-size: 0.6rem !important;
+      color: #2d2d2d;
+      font-family: Microsoft YaHei !important;
+      font-weight: 500 !important;
+      margin-top: 0.3rem;
+    }
+
+    ol {
+      width: 90%;
+      margin-left: 5%;
+    }
+
+    span {
+      font-family: Microsoft YaHei !important;
+      color: #000 !important;
+      font-size: 0.6rem !important;
+      font-weight: 500 !important;
+    }
+
+    ul {
+      width: 90%;
+      margin-left: 5%;
+    }
+
+    li {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+      font-size: 0.6rem !important;
+      color: #2d2d2d;
+      font-family: Microsoft YaHei !important;
+      list-style:decimal inside!important;
+    }
+
+    li span {
+      font-family: Microsoft YaHei !important;
+      color: #000 !important;
+      font-size: 0.6rem !important;
+      font-weight: 500 !important;
+    }
+
+    img {
+      width: 80%;
+      height: auto;
+      margin: 1rem auto;
+      border-radius: 0.3rem;
+    }
+
+    h1,h2,h3,h4,h5{
+      font-family: Microsoft YaHei !important;
+      color: #000 !important;
+      width: 90%;
+      margin-left: 5%;
+    }
+
+    u{
+      font-family: Microsoft YaHei !important;
+      color: #000 !important;
+      font-size: 0.6rem !important;
+    }
+
+    blockquote{
+      border-left: 4px solid #ccc;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      padding-left: 16px;
+      width: 90%;
+      margin-left: 5%;
+    }
+
+    .item_data {
+      width: 80%;
+      margin-left: 10%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      height: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .data_cover {
+      width: 6rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .data_img {
+      width: 0.8rem;
+      height: 0.8rem;
+      margin: 0 0 !important;
+      border-radius: 0 !important;
+      margin-right: 0.4rem !important;
+    }
+
+    .data_num {
+      font-size: 0.5rem;
+      color: #000;
+    }
+
+    .like_img {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto !important;
+      border-radius: 0 !important;
+      margin-top: 2rem !important;
+    }
+
+    .like_footer {
+      font-size: 0.7rem;
+      color: #2d2d2d;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .errotishi {
+
+      width: 100%;
+      background-color: #f9263b;
+      text-align: center;
+
+      position: fixed;
+      top: 0;
+      left: 0;
+      color: #fff !important;
+      z-index: 999;
+    }
+
+    .msg {
+      color: #fff !important;
+      height: 2rem !important;
+      line-height: 2rem !important;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="errotishi hide">
+    <p class="msg"></p>
+  </div>
+  <div id="title"
+    style="font-size: 1rem;width:100%;text-align:center;font-weight:700;margin-top:1rem;margin-bottom:1rem;"></div>
+  <div class="item_data">
+    <div class="data_cover">
+      <img src="img/read.png" class="data_img" />
+      阅读量：<div class="data_num" id="readNum"></div>
+    </div>
+    <div class="data_cover">
+      <img src="img/like.png" class="data_img" />
+      点赞数：<div class="data_num" id="likeNum"></div>
+    </div>
+  </div>
+  </div>
+  <pre class="wiki"></pre>
+  <img src="img/zan.png" class="like_img" onclick="likeNumAddition()" />
+  <div class="like_footer">觉得好就点个赞吧！</div>
+</body>
+<script src="./js/jquery.min.js"></script>
+<script>
+  var baseUrl = 'https://www.linchongpets.com/';
+  var Request = new Object();
+  $(function() {
+    Request = GetRequest();
+    console.log(Request.catalogId);
+    getWikiDetail(Request.catalogId,Request.catalogListId);
+    readNumAddition(Request.catalogId,Request.catalogListId)
+  });
+
+  // 获取链接参数
+  function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      strs = str.split("&");
+      for (var i = 0; i < strs.length; i++) {
+        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+    }
+    return theRequest;
+  }
+
+  function getWikiDetail(catalogId,catalogListId) {
+    $.ajax({
+      url: baseUrl + "lpCmsTest/wiki/article",
+      method: "get",
+      dataType: "json",
+      data: {
+        catalogId: catalogId,
+        type: Request.type,
+        catalogListId: catalogListId
+      },
+      success: function(res) {
+        var content = res.data.content.replace(RegExp("background-color:#ffffff", "g"), "background-color:#ffb606")
+        $(".wiki").html(content);
+        $("#title").html(res.data.title);
+        $("#readNum").html(res.data.readNum);
+        $("#likeNum").html(res.data.likeNum);
+      }
+    });
+  }
+
+
+  function readNumAddition(catalogId,catalogListId) {
+    $.ajax({
+      url: baseUrl + "lpCmsTest/wiki/articleReadNum",
+      method: "get",
+      dataType: "json",
+      data: {
+        catalogId: catalogId,
+        type: Request.type,
+        catalogListId:catalogListId
+      },
+      success: function(res) {
+        var readNum = $("#readNum").html();
+        readNum++;
+        $("#readNum").html(readNum);
+      }
+    });
+  }
+
+
+  function likeNumAddition() {
+    $.ajax({
+      url: baseUrl + "lpCmsTest/wiki/articleLikeNum",
+      method: "get",
+      dataType: "json",
+      data: {
+        catalogId: Request.catalogId,
+        type: Request.type,
+        catalogListId:Request.catalogListId
+      },
+      success: function(res) {
+        var likeNum = $("#likeNum").html();
+        likeNum++;
+        $("#likeNum").html(likeNum);
+        $(".msg").html("谢谢您的支持");
+        $(".errotishi").show();
+        setTimeout(function() {
+          $(".errotishi").hide();
+        }, 2000)
+      }
+    });
+  }
+
+</script>
+
+</html>

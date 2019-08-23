@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>萌宠百科</title>
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/rem.css" />
+  <link rel="stylesheet" href="./css/detail.css" />
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+  </style>
+  <script src="./js/vue.min.js"></script>
+</head>
+
+<body>
+  <div class="search_cover">
+    <input type="text" class="serach_input" value="" placeholder="#口腔清洁" id="txt" />
+    <img class="search_icon" src="img/search.png" />
+  </div>
+
+  <div id="v-for-object" style="width:100%">
+    <div class="catalog_cover" v-cloak v-if="wikiShow">
+      <div v-for="(item,index) in wikiList" style="width:100% ">
+        <div class="catalog_item"  v-on:click="switchArrow(index)">
+          <div class="item-cover">
+            <img v-bind:src="item.catalogLists[0].image" class="cata_img" />
+            <div class="cata_title">{{ item.catalogName }}</div>
+            <div class="cata_num">共{{ item.catalogLists.length }}篇笔记</div>
+          </div>
+          <img src="img/arrow.png" class="cata_arr_img" v-if="item.arrow" />
+          <img src="img/arrow_up.png" class="cata_arr_img" v-if="!item.arrow" />
+        </div>
+
+        <div class="caltalog_list_cover" v-if="!item.arrow ">
+          <div class="list_item" v-on:click="toWiki(citem.catalogListId,citem.catalogId)"
+            v-for="citem in item.catalogLists">
+            <div class="item_title">{{ citem.smallName }}</div>
+            <div class="item_divide"></div>
+            <div class="item_data">
+              <div class="data_cover">
+                <img src="img/read.png" class="data_img" />
+                <div class="data_num">{{ citem.readNum }}</div>
+              </div>
+              <div class="data_cover">
+                <img src="img/like.png" class="data_img" />
+                <div class="data_num">{{ citem.likeNum }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog_cover" v-cloak v-if="!wikiShow">
+      <div class="caltalog_list_cover">
+        <div class="list_search_item" v-on:click="toWiki(sitem.catalogListId,sitem.catalogId)"
+          v-for="sitem in wikiArticleList">
+          <img v-bind:src="sitem.image" class="item_img" />
+          <div class="item_search_title">{{ sitem.smallName }}</div>
+          <div class="item_divide"></div>
+          <div class="item_data">
+            <div class="data_cover">
+              <img src="img/read.png" class="data_img" />
+              <div class="data_num">{{ sitem.readNum }}</div>
+            </div>
+            <div class="data_cover">
+              <img src="img/like.png" class="data_img" />
+              <div class="data_num">{{ sitem.likeNum }}</div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <img class="no_data" src="img/no_data.png" v-if='wikiArticleList.length==0 && !wikiShow' />
+    <div class="no_data_tip" v-if='wikiArticleList.length==0 && !wikiShow'>没有找到相关资源</div>
+  </div>
+</body>
+<script src="./js/jquery.min.js"></script>
+<script>
+  var baseUrl = 'https://www.linchongpets.com/';
+  var Request = new Object();
+  var vm = new Vue({
+    el: "#v-for-object",
+    data: {
+      wikiList: [],
+      wikiArticleList: [],
+      wikiShow: true
+    },
+    methods: {
+      switchArrow: function(index) {
+        if (this.wikiList[index].arrow) {
+          this.wikiList[index].arrow = false;
+        } else {
+          this.wikiList[index].arrow = true;
+        }
+      }
+    }
+  });
+
+  $(function() {
+    Request = GetRequest();
+    console.log(Request.type);
+    getCatCatalog(Request.type);
+    $("#txt").val("")
+  });
+
+  // 获取链接参数
+  function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      strs = str.split("&");
+      for (var i = 0; i < strs.length; i++) {
+        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+    }
+    return theRequest;
+  }
+
+  var flag = true;
+  $("#txt").on("compositionstart", function() {
+    flag = false;
+  });
+  $("#txt").on("compositionend", function() {
+    flag = true;
+  });
+  $("#txt").on("input", function() {
+    var _this = this;
+    setTimeout(function() {
+      if (flag) {
+        console.log($(_this).val());
+        searchArticle($(_this).val());
+      }
+    }, 0);
+  });
+
+  function toWiki(catalogListId, catalogId) {
+    location.href = "wiki.html?catalogListId=" + catalogListId + "&type=" + Request.type + "&catalogId=" + catalogId;
+  }
+
+  function searchArticle(search) {
+    if ($.trim(search) == "") {
+      vm.wikiShow = true;
+      return;
+    }
+    $.ajax({
+      url: baseUrl + "lpCmsTest/wiki/search",
+      method: "get",
+      dataType: "json",
+      data: {
+        search: search,
+        type: Request.type
+      },
+      success: function(res) {
+        var result = res.data;
+        vm.wikiArticleList = result;
+        vm.wikiShow = false;
+      }
+    });
+  }
+
+  function getCatCatalog(type) {
+    $.ajax({
+      url: baseUrl + "lpCmsTest/wiki/catalogs",
+      method: "get",
+      dataType: "json",
+      data: {
+        type: type
+      },
+      success: function(res) {
+        var result = res.data;
+        for (var i = 0; i < result.length; i++) {
+          result[i].arrow = true;
+        }
+        vm.wikiList = result;
+      }
+    });
+  }
+
+</script>
+
+</html>
