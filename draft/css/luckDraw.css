@@ -11,6 +11,12 @@
     z-index: 999;
 }
 
+body{
+    background-color: #ceddfc;
+    height:100vh!important;
+    width:100vw!important;
+}
+
 .luckul {
     position: relative;
     width: 100%;
@@ -64,6 +70,10 @@
     width: 90%;
     margin: 0 auto;
     min-height: 9rem;
+    background-color:#ea4952;
+    border-radius: 0.5rem;
+    padding-top:.5rem;
+    padding-bottom:.5rem;
 }
 
 .luckcenter .luckcenterli {
@@ -75,7 +85,8 @@
     text-align: center;
     margin-left: 0.3rem;
     border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    margin-top: 0.25rem;
 }
 
 .luckcenter .luckcenterli img {
@@ -294,7 +305,7 @@
 .jiangMsg .jiangBut p {
     width: 70%;
     margin: 0 auto;
-    border: 1px solid #ccc;
+    border: 1px solid #f0b931;
     line-height: 1.2rem;
     margin-top: 0.7rem;
     text-align: center;

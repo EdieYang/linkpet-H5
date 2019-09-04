@@ -89,7 +89,9 @@
 <script src="./js/jquery.min.js"></script>
 <script>
     code;
-    baseUrl = 'https://www.linchongpets.com/';
+    // baseUrl = 'https://www.linchongpets.com/';
+    baseUrl = 'http://localhost:8093/';
+    baseUrlWechat='http://localhost:8094/';
     act = 'd6210b86e9f14578b2d10cd00d5bdda1';
     userId = '';
     // 参加活动的人数
@@ -147,7 +149,7 @@
 
     function code() {
         $.ajax({
-            url: baseUrl + 'lpWechat/wxAuth/redirectCodeUrl',
+            url: baseUrlWechat + 'lpWechat/wxAuth/redirectCodeUrl',
             method: "get",
             dataType: "json",
             data: {
@@ -162,7 +164,7 @@
 
     function xinxi() {
         $.ajax({
-            url: baseUrl + 'lpWechat/wxAuth/authUserInfo',
+            url: baseUrlWechat + 'lpWechat/wxAuth/authUserInfo',
             method: "get",
             dataType: "json",
             data: {
@@ -476,7 +478,7 @@
     function share() {
 
         $.ajax({
-            url: baseUrl + 'lpWechat/wxAuth/configWxEnvironment',
+            url: baseUrlWechat + 'lpWechat/wxAuth/configWxEnvironment',
             method: "get",
             dataType: "json",
             data: {
